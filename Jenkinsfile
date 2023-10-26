@@ -1,39 +1,19 @@
 pipeline {
     agent any
-    
+
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the code from your Git repository
-                script {
-                    checkout scm
-                }
-            }
-        }
-        
-        // stage('Build .NET Project') {
-        //     steps {
-        //         // Use dotnet CLI to build the project
-        //         sh 'dotnet build'
-        //     }
-        // }
-
-        stage('Build and Dockerize') {
-            steps {
-                // Use Docker to build an image using the Dockerfile
-                script {
-                    docker.build('p3ops-demo-app:latest', '.')
-                }
+                checkout scm
             }
         }
 
-        
-        stage('Push to Docker Hub') {
+        stage('Build and Publish .NET App') {
             steps {
-                // Build and push Docker image
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'DockerHub2') {
-                        docker.image('p3ops-demo-app:latest').push()
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                        def image = docker.build('quintenv1/dotnet-app:latest', '-f Dockerfile .')
+                        image.push()
                     }
                 }
             }
