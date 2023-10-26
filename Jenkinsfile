@@ -8,6 +8,14 @@ pipeline {
             }
         }
 
+        stage('Test Docker') {
+            steps {
+                script {
+                    docker.image('hello-world').run()
+                }
+            }
+        }
+
         stage('Build and Publish .NET App') {
             steps {
                 script {
