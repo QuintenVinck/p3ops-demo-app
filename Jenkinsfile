@@ -2,11 +2,20 @@ pipeline {
     agent any
 
     stages {
-        stage('Test Docker') {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build and Publish .NET App') {
             steps {
                 script {
-                    sh 'docker --version'
-                    sh 'docker image ls'
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                        sh 'docker build -t quintenv1/dotnet-app:latest -f Dockerfile .'
+                        sh 'docker push quintenv1/dotnet-app:latest'
+                    }
                 }
             }
         }
@@ -22,14 +31,6 @@ pipeline {
 //         stage('Checkout') {
 //             steps {
 //                 checkout scm
-//             }
-//         }
-
-//         stage('Test Docker') {
-//             steps {
-//                 script {
-//                     docker.image('hello-world').run()
-//                 }
 //             }
 //         }
 
