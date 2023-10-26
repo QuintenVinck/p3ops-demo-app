@@ -2,33 +2,55 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
         stage('Test Docker') {
             steps {
                 script {
-                    docker.image('hello-world').run()
-                }
-            }
-        }
-
-        stage('Build and Publish .NET App') {
-            steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                        def image = docker.build('quintenv1/dotnet-app:latest', '-f Dockerfile .')
-                        image.push()
-                    }
+                    sh 'docker --version'
+                    sh 'docker image ls'
                 }
             }
         }
     }
 }
 
+
+//dotnet
+// pipeline {
+//     agent any
+
+//     stages {
+//         stage('Checkout') {
+//             steps {
+//                 checkout scm
+//             }
+//         }
+
+//         stage('Test Docker') {
+//             steps {
+//                 script {
+//                     docker.image('hello-world').run()
+//                 }
+//             }
+//         }
+
+//         stage('Build and Publish .NET App') {
+//             steps {
+//                 script {
+//                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+//                         def image = docker.build('quintenv1/dotnet-app:latest', '-f Dockerfile .')
+//                         image.push()
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
+
+
+
+
+
+//android
 // pipeline {
 //     agent any
     
