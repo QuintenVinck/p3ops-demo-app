@@ -11,7 +11,7 @@ pipeline {
         stage('Build and Publish .NET App') {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                         def image = docker.build('quintenv1/dotnet-app:latest', '-f Dockerfile .')
                         image.push()
                     }
