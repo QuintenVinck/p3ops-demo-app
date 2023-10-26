@@ -11,20 +11,29 @@ pipeline {
             }
         }
         
-        stage('Build .NET Project') {
+        // stage('Build .NET Project') {
+        //     steps {
+        //         // Use dotnet CLI to build the project
+        //         sh 'dotnet build'
+        //     }
+        // }
+
+        stage('Build and Dockerize') {
             steps {
-                // Use dotnet CLI to build the project
-                sh 'dotnet build'
+                // Use Docker to build an image using the Dockerfile
+                script {
+                    docker.build('p3ops-demo-app:latest', '.')
+                }
             }
         }
+
         
         stage('Push to Docker Hub') {
             steps {
                 // Build and push Docker image
                 script {
-                    docker.build('mcr.microsoft.com/dotnet/sdk:6.0:latest', '.')
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                        docker.image('mcr.microsoft.com/dotnet/sdk:6.0:latest').push()
+                        docker.image('p3ops-demo-app:latest').push()
                     }
                 }
             }
