@@ -32,7 +32,7 @@ pipeline {
             steps {
                 // Build and push Docker image
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                    docker.withRegistry('https://registry.hub.docker.com', 'DockerHub2') {
                         docker.image('p3ops-demo-app:latest').push()
                     }
                 }
