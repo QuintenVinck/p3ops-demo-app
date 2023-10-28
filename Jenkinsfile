@@ -13,13 +13,12 @@ pipeline {
             steps {
                 script {
                     // Use --password-stdin for secure password handling
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                    withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
                         def registry = 'https://registry.hub.docker.com'
-                        def image = 'quintenv1/dotnet-app:latest'
                         
                         sh "echo \${DOCKER_PASSWORD} | docker login -u \${DOCKER_USERNAME} --password-stdin \${registry}"
-                        sh "docker build -t quintenv1/dotnet-app ."
-                        sh "docker push quintenv1/dotnet-app"
+                        sh "docker build -t quintenv/dotnet-app ."
+                        sh "docker push quintenv/dotnet-app"
                     }
                 }
             }
