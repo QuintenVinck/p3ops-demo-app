@@ -18,8 +18,8 @@ pipeline {
                         def image = 'quintenv1/dotnet-app:latest'
                         
                         sh "echo \${DOCKER_PASSWORD} | docker login -u \${DOCKER_USERNAME} --password-stdin \${registry}"
-                        sh "docker build -t \${image}"
-                        sh "docker push \${image}"
+                        sh "docker build -t quintenv1/dotnet-app:latest"
+                        sh "docker push quintenv1/dotnet-app:latest"
                     }
                 }
             }
