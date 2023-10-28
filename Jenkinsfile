@@ -12,9 +12,14 @@ pipeline {
         stage('Build and Publish .NET App') {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                        sh 'docker build -t quintenv1/dotnet-app:latest -f Dockerfile .'
-                        sh 'docker push quintenv1/dotnet-app:latest'
+                    // Use --password-stdin for secure password handling
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                        def registry = 'https://registry.hub.docker.com'
+                        def image = 'quintenv1/dotnet-app:latest'
+                        
+                        sh "echo \${DOCKER_PASSWORD} | docker login -u \${DOCKER_USERNAME} --password-stdin \${registry}"
+                        sh "docker build -t \${image} -f Dockerfile ."
+                        sh "docker push \${image}"
                     }
                 }
             }
